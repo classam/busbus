@@ -1,6 +1,9 @@
 
 class Post
-    attr_accessor :title, :created, :html_content, :status, :categories 
+    attr_accessor :title, :created, :html_content, :categories 
+    def initialize()
+        @visible = false
+    end
     
     def datestamp
         @created.strftime("%Y_%b_%d")
@@ -8,6 +11,14 @@ class Post
 
     def id
         datestamp + '-' + @title
+    end
+
+    def visible=( bool )
+        @visible = bool
+    end
+
+    def visible?
+        @visible
     end
 end
 

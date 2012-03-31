@@ -27,7 +27,7 @@ class InputWordpressNokogiriXml
         @post.title = nokogiri_xml_item.at_css("title").content
         @post.created = DateTime.parse( nokogiri_xml_item.at_css("post_date").content ) 
         @post.html_content = nokogiri_xml_item.css("encoded").first().content
-        @post.status = nokogiri_xml_item.at_css("status").content
+        @post.visible = true if nokogiri_xml_item.at_css("status").content == "publish"
         @post.categories = nokogiri_xml_item.css("category")
         @post.categories = post.categories.map { |category| CGI.unescapeHTML(category.content) } 
         @post.wp_link = nokogiri_xml_item.at_css("post_id").content

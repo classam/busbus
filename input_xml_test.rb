@@ -56,7 +56,7 @@ I would just like to make it known that Ive had a lifelong dream to be a haberda
     end
     
     def test_status
-        assert_equal( "publish", @post.status )
+        assert( @post.visible? )
     end
    
     def test_category
