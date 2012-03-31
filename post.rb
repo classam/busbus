@@ -3,6 +3,7 @@ class Post
     attr_accessor :title, :created, :html_content, :categories 
     def initialize()
         @visible = false
+        @created = DateTime.now
     end
     
     def datestamp
@@ -16,7 +17,6 @@ class Post
     def id
         datestamp + '-' + namestamp
     end
-
 
     def visible=( bool )
         @visible = bool

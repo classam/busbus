@@ -3,6 +3,7 @@ require "post"
 
 require "test/unit"
 require "Date"
+require "yaml"
 
 class TestPost < Test::Unit::TestCase
     
@@ -23,5 +24,9 @@ class TestPost < Test::Unit::TestCase
         @post.visible = true
         assert( @post.visible? )
     end
+    
+    #def test_emit_yaml
+    #    puts @post.to_yaml()
+    #end
 
 end
