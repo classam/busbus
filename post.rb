@@ -8,10 +8,15 @@ class Post
     def datestamp
         @created.strftime("%Y_%b_%d")
     end
+    
+    def namestamp 
+        @title.strip!.gsub(/\s/, '_').gsub(/\W/, '')
+    end
 
     def id
-        datestamp + '-' + @title
+        datestamp + '-' + namestamp
     end
+
 
     def visible=( bool )
         @visible = bool
