@@ -5,7 +5,7 @@ require "Date"
 require 'rubygems'
 require 'nokogiri'
 
-class TestXmlParser < Test::Unit::TestCase
+class TestXmlInput < Test::Unit::TestCase
 
     def setup
         xml = '
@@ -53,7 +53,6 @@ I would just like to make it known that Ive had a lifelong dream to be a haberda
     def test_content
         assert_not_nil( @post.html_content )
         assert_no_match( /CDATA/, @post.html_content )  
-        puts @post.html_content
     end
     
     def test_status

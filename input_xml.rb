@@ -23,7 +23,7 @@ class InputWordpressNokogiriXml
     ## Intended to convert Wordpress 'item' XML blocks into canonical post units. 
     def initialize( nokogiri_xml_item )
         nokogiri_xml_item.remove_namespaces! 
-        @post = Post.new()
+        @post = WordpressPost.new()
         @post.title = nokogiri_xml_item.at_css("title").content
         @post.created = DateTime.parse( nokogiri_xml_item.at_css("post_date").content ) 
         @post.html_content = nokogiri_xml_item.css("encoded").first().content

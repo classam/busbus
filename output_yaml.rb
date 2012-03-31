@@ -1,11 +1,10 @@
 
-class OutputToFile
+class Output
+    
     def initialize( post )
         @post = post 
     end
-    def timestamp
-        @post.created_date.
-    end
+
 end
 
 class OutputToYaml
