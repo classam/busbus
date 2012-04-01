@@ -1,4 +1,4 @@
-require "post"
+require "./post"
 
 require 'rubygems'
 require 'cgi' 

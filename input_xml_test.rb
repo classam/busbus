@@ -1,5 +1,5 @@
 
-require "input_xml"
+require "./input_xml"
 require "test/unit"
 require "Date"
 require 'rubygems'
