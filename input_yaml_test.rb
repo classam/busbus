@@ -6,7 +6,7 @@ require "yaml"
 require "test/unit"
 
 class MockRenderer
-    def to_html( content )
+    def to_html( content, yaml_object )
         return content
     end
 end

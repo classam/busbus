@@ -1,12 +1,12 @@
 
 require "./post"
 require 'yaml'
-##require './renderer'
+require './renderer'
 require 'Date'
 
 class InputYaml
 
-    def initialize( yaml, rendererFactory )
+    def initialize( yaml, rendererFactory = RendererFactory.new() )
         object = YAML.load( yaml )
         @post = Post.new()
         @post.title = object['title']
@@ -16,7 +16,7 @@ class InputYaml
         content_type = object['content_type']
         renderer = rendererFactory.create( content_type )
 
-        @post.html_content = renderer.to_html( content )  
+        @post.html_content = renderer.to_html( content, object )  
         @post.categories = object['categories']
         @post.visible = object['visible']
     end
