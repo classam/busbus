@@ -24,13 +24,38 @@ class InputWordpressNokogiriXml
     def initialize( nokogiri_xml_item )
         nokogiri_xml_item.remove_namespaces! 
         @post = WordpressPost.new()
-        @post.title = nokogiri_xml_item.at_css("title").content
-        @post.created = DateTime.parse( nokogiri_xml_item.at_css("post_date").content ) 
-        @post.html_content = nokogiri_xml_item.css("encoded").first().content
-        @post.visible = true if nokogiri_xml_item.at_css("status").content == "publish"
+        begin
+            @post.title = nokogiri_xml_item.at_css("title").content
+        rescue
+            @post.title = ""
+            @post.errors.push( "Could not parse title." )
+        end
+
+        begin
+            @post.created = DateTime.parse( nokogiri_xml_item.at_css("post_date").content ) 
+        rescue
+            @post.errors.push( "Could not parse date" )
+        end
+       
+        begin 
+            @post.html_content = nokogiri_xml_item.css("encoded").first().content
+        rescue 
+            @post.errors.push( "Could not parse content" )
+        end
+
+        if nokogiri_xml_item.at_css("status") != nil 
+            @post.visible = nokogiri_xml_item.at_css("status").content == "publish"
+        else
+            @post.errors.push( "Could not parse status" )
+        end
+        @post.visible = true if nokogiri_xml_item.at_css("status") != nil and nokogiri_xml_item.at_css("status").content == "publish"
         @post.categories = nokogiri_xml_item.css("category")
         @post.categories = post.categories.map { |category| CGI.unescapeHTML(category.content) } 
-        @post.wp_link = nokogiri_xml_item.at_css("post_id").content
+        if nokogiri_xml_item.at_css("post_id") != nil
+            @post.wp_link = nokogiri_xml_item.at_css("post_id").content
+        else
+            @post.errors.push( "Could not parse id." )
+        end
     end
     attr_reader :post
 end

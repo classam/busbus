@@ -10,7 +10,7 @@ class TestXmlInput < Test::Unit::TestCase
     def setup
         xml = '
         <item>
-        <title>The Watchmaker&#039;s Story</title>
+        <title>Tactical Vanilla</title>
 		<link>http://www.curtis.lassam.net/?p=340</link>
 		<pubDate>Fri, 11 Jan 2008 07:58:31 +0000</pubDate>
 		<dc:creator>lassam</dc:creator>
@@ -43,7 +43,7 @@ I would just like to make it known that Ive had a lifelong dream to be a haberda
     end
 
     def test_title
-        assert_equal("The Watchmaker's Story", @post.title)
+        assert_equal("Tactical Vanilla", @post.title)
     end
 
     def test_created

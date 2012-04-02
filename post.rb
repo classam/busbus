@@ -1,9 +1,13 @@
 
 class Post
-    attr_accessor :title, :created, :html_content, :categories 
+    attr_accessor :title, :created, :html_content, :categories, :errors 
     def initialize()
+        @title = ""
         @visible = false
         @created = DateTime.now
+        @html_content = ""
+        @categories = []
+        @errors = []
     end
     
     def datestamp
@@ -11,7 +15,7 @@ class Post
     end
     
     def namestamp 
-        @title.strip!.gsub(/\s/, '_').gsub(/\W/, '')
+        @title.strip.gsub(/\s/, '_').gsub(/\W/, '')
     end
 
     def id
