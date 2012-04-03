@@ -35,3 +35,20 @@ class WordpressPost < Post
 ## A special subclass of Post for ex-Wordpress posts. 
     attr_accessor :wp_link
 end
+
+def yaml_directory_to_list_of_posts( input_folder) 
+    contains = Dir.new( input_folder ).entries
+
+    posts = []
+    
+    contains.each { |path|
+        if( path != "." and path != ".." and path =~ /yaml$/ ) 
+            file = File.open( input_folder + "/" + path, 'rb' )
+            content = file.read 
+            converter = InputYaml.new( content )
+            posts.push( converter.post )
+        end
+    }
+
+    return posts
+end

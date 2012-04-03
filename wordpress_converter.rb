@@ -1,14 +1,20 @@
 
 require './input_xml'
 require "./output_yaml"
+require "./util"
 
 require 'rubygems'
 require 'nokogiri'
-require 'FileUtils'
 
+def write_post_to_file( post, output_folder ) 
+    begin
+        file_path = output_folder + "/" + post.id + ".yaml" 
+        quickwrite( post.to_yaml(), file_path )
+    rescue
+    end
+end
 
 def wordpress_convert( input_filename, output_folder )
-
     xml_parsed = Nokogiri::XML( File.open( input_filename) ) 
 
     posts = []
@@ -17,29 +23,13 @@ def wordpress_convert( input_filename, output_folder )
         converter = InputStringXml.new( item.to_s )
         posts.push(converter.post)
     }
-
-    posts.each{ |post|
-    }
     
     # create output directory
-    begin
-        FileUtils.mkdir( output_folder ) 
-    rescue
-    end
+    softmkdir( output_folder )
 
     # convert into YAML
     # write to files
-    posts.each{ |post|
-        begin
-            file_path = output_folder + "/" + post.id + ".yaml" 
-            File.open( file_path, 'w' ) do |f|
-                f.puts post.to_yaml() 
-            end
-        rescue
-            
-        end
-    }
-
+    posts.each{ |post| write_post_to_file( post, output_folder ) }
 end
 
 wordpress_convert( "/Users/curtis/code/curtislassam.wordpress.2012-03-30.xml", "/Users/curtis/code/generated" )
