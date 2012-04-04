@@ -12,6 +12,12 @@ class Post
                   'content_type' => 'html',
                   'content' => @html_content,
                   } 
+        
+        begin
+            object['wp_link'] = @wp_link
+        rescue
+        end
+
         return YAML.dump( object ) 
     end
 end

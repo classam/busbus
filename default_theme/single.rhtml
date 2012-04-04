@@ -1,14 +1,31 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="utf-8" />
 </head>
 <body>
 
+<%= @templates['_header'] %>
+
+<% unless previous_post == nil %> 
+    <div class='previous'><a href='<%= previous_post.id %>.html'>&lt; Previous Post</a></div>
+<% end %>
+<% unless next_post == nil %> 
+    <div class='previous'><a href='<%= next_post.id %>.html'>Next Post &gt;</a></div>
+<% end %>
+
 <article>
 <h1><%= current_post.title %></h1>
-
-
+<div class='date'><%= current_post.created.strftime("%B %d, %Y"); %></div>
+<p><%= current_post.html_content %></p>
 </article>
+
+<% unless previous_post == nil %> 
+    <div class='previous'><a href='<%= previous_post.id %>.html'>&lt; Previous Post</a></div>
+<% end %>
+<% unless next_post == nil %> 
+    <div class='previous'><a href='<%= next_post.id %>.html'>Next Post &gt;</a></div>
+<% end %>
 
 </body>
 </html>

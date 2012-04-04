@@ -4,10 +4,12 @@
     <meta charset="utf-8" />
 </head>
 <body>
-
+    
+<%= @templates['_header'] %>
+    
     <ul>
     <% for post in posts.reverse %> 
-        <li> <a href='<%= post.id + ".html" %>'><%= post.created.to_s %> - <%= post.title %></a></li> 
+        <li> <a href='<%= post.id + ".html" %>'><%= post.created.strftime("%B %d, %Y") %> - <%= post.title %></a></li> 
     <% end %>
     </ul>
 </body>
