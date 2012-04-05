@@ -7,9 +7,10 @@ require './util'
 class Theme
 
     def initialize( theme_folder )
-        index_file = theme_folder + "/index.rhtml"      
-        single_file = theme_folder + "/single.rhtml" 
-        preferences_file = theme_folder + "/settings.yaml"
+        @theme_folder = theme_folder
+        index_file = @theme_folder + "/index.rhtml"      
+        single_file = @theme_folder + "/single.rhtml" 
+        preferences_file = @theme_folder + "/settings.yaml"
         
         file = File.open( index_file, 'rb' )
         @index_theme_erb = ERB.new( file.read )
@@ -18,7 +19,8 @@ class Theme
         file = File.open( preferences_file, 'rb' )
         @settings = YAML.load(file.read)
         
-        @templates = get_all_other_templates( theme_folder ) 
+        @templates = get_all_other_templates( @theme_folder ) 
+        
     end
 
     def get_all_other_templates( folder ) 
@@ -38,6 +40,20 @@ class Theme
         }
 
         return templates
+    end
+
+    def copy_style( theme_folder_path, output_folder_path ) 
+    
+        # calculate paths
+        output_style_folder_path = File.join( output_folder_path, "style" )
+        theme_style_folder_path = File.join( theme_folder_path, "style" ) 
+        # delete the folder if it already exists
+        if File.directory? output_style_folder_path
+            puts output_style_folder_path + " already exists!" 
+            FileUtils.rm_rf( output_style_folder_path )  
+        end
+        # replace it. 
+        FileUtils.cp_r( theme_style_folder_path, output_style_folder_path )
     end
 
     def render( posts, output_folder )
@@ -64,6 +80,8 @@ class Theme
             generate_post( previous_post, post, next_post, output_folder )
 
         end
+        
+        copy_style( @theme_folder, output_folder ) 
     end
     
     def render_all_modules( posts ) 
