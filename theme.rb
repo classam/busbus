@@ -1,6 +1,7 @@
 
 require 'yaml'
 require 'erb'
+require 'cgi'
 require './post'
 require './util'
 
@@ -43,13 +44,11 @@ class Theme
     end
 
     def copy_style( theme_folder_path, output_folder_path ) 
-    
         # calculate paths
         output_style_folder_path = File.join( output_folder_path, "style" )
         theme_style_folder_path = File.join( theme_folder_path, "style" ) 
         # delete the folder if it already exists
         if File.directory? output_style_folder_path
-            puts output_style_folder_path + " already exists!" 
             FileUtils.rm_rf( output_style_folder_path )  
         end
         # replace it. 
@@ -57,13 +56,61 @@ class Theme
     end
 
     def render( posts, output_folder )
+
+        posts.sort! { |a, b|  b.created <=> a.created }
+
+        categories = extract_categories( posts ).sort_by{|key, value| -value.length } 
+    
+        for key, value in categories
+            puts key, value.length
+        end
+
         softmkdir( output_folder )
 
-        render_all_modules( posts )
-        render_all_pages( posts )
+        render_all_modules( posts, categories )
+        render_all_pages( posts, categories, output_folder )
 
-        generate_index( posts, output_folder )
+        generate_index( posts, categories, output_folder )
+        generate_posts( posts, categories, output_folder )
+        
+        copy_style( @theme_folder, output_folder ) 
+    end
+   
+    def extract_categories( posts ) 
+        categories = {}
+        for post in posts
+            for category in post.categories
+                if categories[category] == nil
+                    categories[category] = []
+                end
+                categories[category].push( post ) 
+            end
+        end
+        return categories 
+    end
 
+    def render_all_modules( posts, categories ) 
+        for template_name, template in @templates
+            if( template_name =~ /^_/ ) 
+                @templates[template_name] = template.result( binding )
+            end
+        end
+    end
+
+    def render_all_pages( posts, categories, output_folder ) 
+        for template_name, template in @templates
+            unless( template_name =~ /^_/ ) 
+                @templates[template_name] = template.result( binding )
+                quickwrite( @templates[template_name], output_folder + "/" + template_name ) 
+            end
+        end
+    end
+
+    def generate_index( posts, categories, output_folder ) 
+        quickwrite( @index_theme_erb.result( binding ), output_folder + "/index.html" ) 
+    end
+
+    def generate_posts( posts, categories, output_folder )
         posts.each_with_index do |post, index|  
             previous_index = index - 1
             next_index = index + 1
@@ -78,31 +125,7 @@ class Theme
             end
             
             generate_post( previous_post, post, next_post, output_folder )
-
         end
-        
-        copy_style( @theme_folder, output_folder ) 
-    end
-    
-    def render_all_modules( posts ) 
-        for template_name, template in @templates
-            if( template_name =~ /^_/ ) 
-                @templates[template_name] = template.result( binding )
-            end
-        end
-    end
-
-    def render_all_pages( posts ) 
-        for template_name, template in @templates
-            unless( template_name =~ /^_/ ) 
-                @templates[template_name] = template.result( binding )
-                quickwrite( @templates[template_name], output_folder + "/" + template_name ) 
-            end
-        end
-    end
-
-    def generate_index( posts, output_folder ) 
-        quickwrite( @index_theme_erb.result( binding ), output_folder + "/index.html" ) 
     end
 
     def generate_post( previous_post, current_post, next_post, output_folder ) 

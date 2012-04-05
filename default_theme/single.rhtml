@@ -1,10 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-</head>
-<body>
-
 <%= @templates['_header'] %>
 
 <% unless previous_post == nil %> 
@@ -15,7 +8,7 @@
 <% end %>
 
 <article>
-<h1><%= current_post.title %></h1>
+<h2><%= current_post.title %></h2>
 <div class='date'><%= current_post.created.strftime("%B %d, %Y"); %></div>
 <p><%= current_post.html_content %></p>
 </article>
@@ -27,5 +20,4 @@
     <div class='previous'><a href='<%= next_post.id %>.html'>Next Post &gt;</a></div>
 <% end %>
 
-</body>
-</html>
+<%= @templates['_footer'] %>
