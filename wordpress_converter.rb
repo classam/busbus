@@ -9,7 +9,7 @@ require 'optparse'
 
 def write_post_to_file( post, output_folder ) 
     begin
-        file_path = output_folder + "/" + post.id + ".yaml" 
+        file_path = File.join( output_folder, post.id + ".yaml" )
         quickwrite( post.to_yaml(), file_path )
     rescue
     end
@@ -31,6 +31,12 @@ def wordpress_convert( input_filename, output_folder )
     # convert into YAML
     # write to files
     posts.each{ |post| write_post_to_file( post, output_folder ) }
+
+    #construct a htaccess file
+    htaccess = ""
+    posts.each{ |post| htaccess << ("Redirect /?p=" + post.wp_link + " /" + post.id + ".html\n")}  
+    quickwrite( htaccess, File.join( output_folder, ".htaccess" ) )
+
 end
 
 options = {} 
