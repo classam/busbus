@@ -7,6 +7,7 @@ require 'rubygems'
 require 'nokogiri'
 require 'optparse'
 
+
 def write_post_to_file( post, output_folder ) 
     begin
         file_path = File.join( output_folder, post.id + ".yaml" )

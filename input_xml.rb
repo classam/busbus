@@ -5,6 +5,12 @@ require 'cgi'
 require 'nokogiri'
 require 'Date' 
 
+class WordpressPost < Post
+## A special subclass of Post for ex-Wordpress posts. 
+    attr_accessor :wp_link
+end
+
+
 class InputStringXml
     def initialize( xml_item, xml_converter_factory=WordpressNokogiriXmlFactory.new() )
         xml_parsed = Nokogiri::XML( xml_item )

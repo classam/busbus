@@ -9,12 +9,7 @@ class InputYaml
     def initialize( yaml, rendererFactory = RendererFactory.new() )
         object = YAML.load( yaml )
 
-        begin
-            @post = WordpressPost.new()
-            @post.wp_link = object['wp_link'] 
-        rescue
-            @post = Post.new()
-        end
+        @post = Post.new()
 
         @post = Post.new()
         @post.title = object['title']
