@@ -5,6 +5,7 @@ require "./util"
 
 require 'rubygems'
 require 'nokogiri'
+require 'optparse'
 
 def write_post_to_file( post, output_folder ) 
     begin
@@ -32,4 +33,28 @@ def wordpress_convert( input_filename, output_folder )
     posts.each{ |post| write_post_to_file( post, output_folder ) }
 end
 
-wordpress_convert( "/Users/curtis/code/curtislassam.wordpress.2012-03-30.xml", "/Users/curtis/code/generated" )
+options = {} 
+
+optparse = OptionParser.new {|opts|
+    opts.banner = "Usage: ruby wordpress_converter.rb --wordpress_xml WORDPRESS_XML --output_folder OUTPUT_FOLDER"
+
+    options[:wordpress_xml] = nil
+    opts.on( '-w', '--wordpress_xml INPUT', 'Path to a wordpress export XML file') { |input| options[:wordpress_xml] = input } 
+    
+    options[:output_folder] = nil
+    opts.on( '-o', '--output_folder OUTPUT', 'Creates a busbus .yaml directory in the target folder.') { |output| options[:output_folder] = output } 
+
+    opts.on("-h", "--help", "Show this message"){
+        puts opts
+        exit
+    }
+}
+
+optparse.parse!
+
+if options[:wordpress_xml] == nil or options[:output_folder] == nil
+    puts optparse
+    exit
+end
+
+wordpress_convert( options[:wordpress_xml], options[:output_folder] ) 
