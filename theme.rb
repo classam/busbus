@@ -4,6 +4,7 @@ require 'erb'
 require 'cgi'
 require './post'
 require './util'
+require './rss'
 
 class Theme
 
@@ -61,10 +62,6 @@ class Theme
 
         categories = extract_categories( posts ).sort_by{|key, value| -value.length } 
     
-        for key, value in categories
-            puts key, value.length
-        end
-
         softmkdir( output_folder )
 
         render_all_modules( posts, categories )
@@ -72,6 +69,7 @@ class Theme
 
         generate_index( posts, categories, output_folder )
         generate_posts( posts, categories, output_folder )
+        generate_rss( posts, output_folder )
         
         copy_style( @theme_folder, output_folder ) 
     end
@@ -101,13 +99,13 @@ class Theme
         for template_name, template in @templates
             unless( template_name =~ /^_/ ) 
                 @templates[template_name] = template.result( binding )
-                quickwrite( @templates[template_name], output_folder + "/" + template_name ) 
+                quickwrite( @templates[template_name], File.join( output_folder, template_name)  ) 
             end
         end
     end
 
     def generate_index( posts, categories, output_folder ) 
-        quickwrite( @index_theme_erb.result( binding ), output_folder + "/index.html" ) 
+        quickwrite( @index_theme_erb.result( binding ), File.join( output_folder, "index.html") ) 
     end
 
     def generate_posts( posts, categories, output_folder )
@@ -129,7 +127,12 @@ class Theme
     end
 
     def generate_post( previous_post, current_post, next_post, output_folder ) 
-        quickwrite( @single_theme_erb.result( binding ), output_folder + "/" + current_post.id + ".html" ) 
+        quickwrite( @single_theme_erb.result( binding ), File.join( output_folder, current_post.id + ".html") ) 
+    end
+
+    def generate_rss( posts, output_folder )
+        rss = FeedMeSeymour.new( posts, @settings )
+        quickwrite( rss.content, File.join( output_folder, "rss.xml" ) )
     end
 
 end

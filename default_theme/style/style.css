@@ -1,16 +1,39 @@
 
 body{
     min-width: 360px;
-    max-width: 600px;
+    max-width: 1000px;
     margin: auto;
     font-family: 'Averia Serif Libre', cursive;
     font-weight: 300;
 }
 
+#main{
+    min-width: 360px;
+    max-width: 600px;
+    padding: 5px;
+    margin: auto;
+}
 
+nav
+{
+    width: 140px;
+    float: left;
+    margin: 10px;
+    background: white;
+    border: 1px solid gray;
+    padding: 10px;
+    font-size: small;
+}
 
-#header{
-    
+nav ul
+{
+    padding-left: 0;
+}
+
+nav li
+{
+    list-style-type: none;
+    margin-bottom: 5px;
 }
 
 h1{
