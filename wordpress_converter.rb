@@ -35,7 +35,7 @@ def wordpress_convert( input_filename, output_folder )
 
     #construct a htaccess file
     htaccess = ""
-    posts.each{ |post| htaccess << ("Redirect /?p=" + post.wp_link + " /" + post.id + ".html\n")}  
+    posts.each{ |post| htaccess << ("Redirect /?p=" + post.wp_link + " /post/" + post.id + ".html\n")}  
     quickwrite( htaccess, File.join( output_folder, ".htaccess" ) )
 
 end
