@@ -11,7 +11,7 @@ class Post
     end
     
     def datestamp
-        @created.strftime("%Y_%b_%d")
+        @created.strftime("%Y_%m_%d")
     end
     
     def namestamp 
