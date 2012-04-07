@@ -8,7 +8,7 @@ require './rss'
 
 class Theme
 
-    def initialize( theme_folder )
+    def initialize( theme_folder, root )
         @theme_folder = theme_folder
         index_file = @theme_folder + "/index.rhtml"      
         single_file = @theme_folder + "/single.rhtml" 
@@ -20,6 +20,7 @@ class Theme
         @single_theme_erb = ERB.new( file.read )
         file = File.open( preferences_file, 'rb' )
         @settings = YAML.load(file.read)
+        @settings['location'] = root
         
         @templates = get_all_other_templates( @theme_folder ) 
         

@@ -5,10 +5,10 @@ require './theme'
 
 require 'optparse' 
 
-def compile( input_folder, output_folder, theme_folder )
+def compile( input_folder, output_folder, theme_folder, root )
 
     posts = yaml_directory_to_list_of_posts( input_folder )
-    theme = Theme.new( theme_folder ) 
+    theme = Theme.new( theme_folder, root ) 
 
     theme.render( posts, output_folder ) 
 
@@ -22,6 +22,9 @@ optparse = OptionParser.new {|opts|
 
     options[:input_folder] = nil
     opts.on( '-i', '--input_folder INPUT', 'Path to a folder containing .yaml posts.') { |input| options[:input_folder] = input } 
+    
+    options[:root] = nil
+    opts.on( '-r', '--root FOLDER', 'The site root - e.g. curtis.lassam.net/') { |folder| options[:root] = folder } 
     
     options[:theme_folder] = nil
     opts.on( '-t', '--theme_folder THEME', 'Path to a folder containing a busbus theme.') { |theme| options[:theme_folder] = theme } 
@@ -37,9 +40,9 @@ optparse = OptionParser.new {|opts|
 
 optparse.parse!
 
-if options[:input_folder] == nil or options[:theme_folder] == nil or options[:output_folder] == nil
+if options[:input_folder] == nil or options[:theme_folder] == nil or options[:output_folder] == nil or options[:root] == nil
     puts optparse
     exit
 end
 
-compile( options[:input_folder], options[:output_folder], options[:theme_folder]) 
+compile( options[:input_folder], options[:output_folder], options[:theme_folder], options[:root]) 
