@@ -1,5 +1,5 @@
 
-require 'FileUtils'
+require 'fileutils'
 
 # It's lazy, but I have a soft spot for convenience methods.
 
