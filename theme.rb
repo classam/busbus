@@ -109,6 +109,7 @@ class Theme
     end
 
     def generate_posts( posts, categories, output_folder )
+        softmkdir( File.join( output_folder, "post" ) )
         posts.each_with_index do |post, index|  
             previous_index = index - 1
             next_index = index + 1
@@ -127,7 +128,7 @@ class Theme
     end
 
     def generate_post( previous_post, current_post, next_post, output_folder ) 
-        quickwrite( @single_theme_erb.result( binding ), File.join( output_folder, current_post.id + ".html") ) 
+        quickwrite( @single_theme_erb.result( binding ), File.join( output_folder, 'post', current_post.id + ".html") ) 
     end
 
     def generate_rss( posts, output_folder )

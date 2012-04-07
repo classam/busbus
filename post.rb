@@ -29,6 +29,10 @@ class Post
     def visible?
         @visible
     end
+
+    def link
+        "post/"+id+".html"
+    end
 end
 
 

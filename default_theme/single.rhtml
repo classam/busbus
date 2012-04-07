@@ -1,10 +1,10 @@
 <%= @templates['_header'] %>
 
 <% unless previous_post == nil %> 
-    <div class='previous'><a href='<%= previous_post.id %>.html'>&lt; Previous Post</a></div>
+    <div class='previous'><a href='<%= @settings['location']%><%= previous_post.link %>'>&lt; Previous Post</a></div>
 <% end %>
 <% unless next_post == nil %> 
-    <div class='previous'><a href='<%= next_post.id %>.html'>Next Post &gt;</a></div>
+    <div class='previous'><a href='<%= @settings['location']%><%= next_post.link %>'>Next Post &gt;</a></div>
 <% end %>
 
 <article>
@@ -14,10 +14,10 @@
 </article>
 
 <% unless previous_post == nil %> 
-    <div class='previous'><a href='<%= previous_post.id %>.html'>&lt; Previous Post</a></div>
+    <div class='previous'><a href='<%= @settings['location']%><%= previous_post.link %>'>&lt; Previous Post</a></div>
 <% end %>
 <% unless next_post == nil %> 
-    <div class='previous'><a href='<%= next_post.id %>.html'>Next Post &gt;</a></div>
+    <div class='previous'><a href='<%= @settings['location']%><%= next_post.link %>'>Next Post &gt;</a></div>
 <% end %>
 
 <%= @templates['_footer'] %>

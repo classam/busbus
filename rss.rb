@@ -18,7 +18,7 @@ class FeedMeSeymour
                 i = m.items.new_item
                 i.title = post.title
                 i.description = post.html_content
-                i.link = settings['location']+"/"+post.id+".html"
+                i.link = settings['location']+"/"+post.link
                 i.date = Time.parse(post.created.to_s)
             end
         end

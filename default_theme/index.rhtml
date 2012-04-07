@@ -4,7 +4,7 @@
     <% for post in posts %> 
         <li> 
             <em class='date'> <%= post.created.strftime("%B %d, %Y") %></em>  
-            <a href='<%= post.id + ".html" %>'><%= post.title %></a> 
+            <a href='<%= post.link %>'><%= post.title %></a> 
         </li> 
     <% end %>
     </ul>
@@ -15,7 +15,7 @@
         <% for post in posts %> 
             <li> 
                 <em class='date'> <%= post.created.strftime("%B %d, %Y") %></em>  
-                <a href='<%= post.id + ".html" %>'><%= post.title %></a> 
+                <a href='<%= post.link %>'><%= post.title %></a> 
             </li> 
         <% end %>
         </ul>
