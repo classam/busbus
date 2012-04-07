@@ -17,7 +17,8 @@ def write_post_to_file( post, output_folder )
 end
 
 def wordpress_convert( input_filename, output_folder )
-    xml_parsed = Nokogiri::XML( File.open( input_filename) ) 
+
+    xml_parsed = Nokogiri::XML( File.open(input_filename) ) 
 
     posts = []
     # extract into individual items
@@ -25,7 +26,9 @@ def wordpress_convert( input_filename, output_folder )
         converter = InputStringXml.new( item.to_s )
         posts.push(converter.post)
     }
-    
+
+    puts xml_parsed
+
     # create output directory
     softmkdir( output_folder )
 
@@ -34,9 +37,13 @@ def wordpress_convert( input_filename, output_folder )
     posts.each{ |post| write_post_to_file( post, output_folder ) }
 
     #construct a htaccess file
-    htaccess = ""
-    posts.each{ |post| htaccess << ("Redirect /?p=" + post.wp_link + " /post/" + post.id + ".html\n")}  
-    htaccess << "/?feed=rss2" + " /rss.xml"
+    htaccess = "RewriteEngine on\n"
+    posts.each{ |post| 
+        htaccess << ("RewriteCond %{QUERY_STRING} ^p=" + post.wp_link + "$\n")
+        htaccess << ("RewriteRule ^$ /post/" + post.id + ".html\n")
+    }  
+    htaccess << ("RewriteCond %{QUERY_STRING} ^feed=rss2$\n")
+    htaccess << ("RewriteRule ^$ /rss.xml\n")
     quickwrite( htaccess, File.join( output_folder, ".htaccess" ) )
 
 end
