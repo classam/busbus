@@ -2,7 +2,7 @@
 require "./post"
 require 'yaml'
 require './renderer'
-require 'Date'
+require 'date'
 
 class InputYaml
 
