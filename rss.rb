@@ -20,7 +20,6 @@ class FeedMeSeymour
                 i.description = post.html_content
                 i.link = settings['location']+"/"+post.link
                 i.guid.content = settings['location']+"/"+post.link
-                i.guid.isPermalink = true
                 i.date = Time.parse(post.created.to_s)
             end
         end
