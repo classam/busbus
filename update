@@ -1,0 +1,7 @@
+#! /bin/bash
+
+cd /home/classam/Blog
+git pull
+cd /home/classam/busbus 
+echo "Compiling site"
+/usr/bin/ruby /home/classam/busbus/busbus_compiler.rb -i /home/classam/Blog/ -t /home/classam/busbus_theme/ -o /home/classam/curtis.lassam.net/
