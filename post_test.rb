@@ -17,7 +17,7 @@ class TestPost < Test::Unit::TestCase
     end
 
     def test_id
-        assert_equal( "2008_Jan_10-Hello_How_Are_You", @post.id )
+        assert_equal( "2008_01_10-Hello_How_Are_You", @post.id )
     end
 
     def test_visible

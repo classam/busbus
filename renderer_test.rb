@@ -11,7 +11,7 @@ class TestRenderer < Test::Unit::TestCase
         html_renderer = HtmlRenderer.new()
         html = "<h1>Hello</h1><p>How are you?</p>"
         output = html_renderer.to_html( html, nil )
-        assert_equal( html, output ) 
+        assert_equal( "<p>"+html+"</p>", output ) 
     end
 
     def test_markdown_output

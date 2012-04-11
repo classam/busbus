@@ -15,7 +15,10 @@ end
 
 class HtmlRenderer
     def to_html( content, yaml_object )
-        return content.gsub("\n\n", "<br/>&nbsp;&nbsp;")
+        constructed_content = "<p>"
+        constructed_content << content.gsub("\n\n", "</p><p>")
+        constructed_content << "</p>"
+        return constructed_content
     end
 end
 
