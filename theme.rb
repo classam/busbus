@@ -61,8 +61,8 @@ class Theme
 
         posts.sort! { |a, b|  b.created <=> a.created }
 
-        categories = extract_categories( posts ).sort_by{|key, value| -value.length } 
-    
+        categories = extract_categories( posts )
+
         softmkdir( output_folder )
 
         render_all_modules( posts, categories )
@@ -106,29 +106,50 @@ class Theme
     end
 
     def generate_index( posts, categories, output_folder ) 
+        categories = categories.sort_by{|key, value| -value.length } 
         quickwrite( @index_theme_erb.result( binding ), File.join( output_folder, "index.html") ) 
     end
 
     def generate_posts( posts, categories, output_folder )
         softmkdir( File.join( output_folder, "post" ) )
+
         posts.each_with_index do |post, index|  
-            previous_index = index - 1
-            next_index = index + 1
+            previous_index = index + 1
+            next_index = index - 1
 
             previous_post = nil
 
-            unless previous_index < 0
+            if previous_index <= posts.length
                 previous_post = posts[previous_index]
             end
-            unless next_index > posts.length 
+            unless next_index < 0 
                 next_post = posts[next_index]
+            end 
+
+            category_object = {}
+            post.categories.each do |category|
+                category_object[category] = {}
+                categories[category].each_with_index do |category_post, category_index|
+                    if category_post.id == post.id then
+                        previous_post_in_category_index = category_index + 1
+                        next_post_in_category_index = category_index - 1
+
+                        if previous_post_in_category_index <= categories[category].length 
+                            category_object[category]['previous'] = categories[category][previous_post_in_category_index]
+                        end
+                        unless next_post_in_category_index < 0 
+                            category_object[category]['next'] = categories[category][next_post_in_category_index]
+                        end 
+                    end
+                end
+    
             end
             
-            generate_post( previous_post, post, next_post, output_folder )
+            generate_post( previous_post, post, next_post, category_object, output_folder )
         end
     end
 
-    def generate_post( previous_post, current_post, next_post, output_folder ) 
+    def generate_post( previous_post, current_post, next_post, category_object, output_folder ) 
         quickwrite( @single_theme_erb.result( binding ), File.join( output_folder, 'post', current_post.id + ".html") ) 
     end
 
