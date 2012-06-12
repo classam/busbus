@@ -57,9 +57,14 @@ class Theme
         FileUtils.cp_r( theme_style_folder_path, output_style_folder_path )
     end
 
-    def render( posts, output_folder )
+    def render( all_posts, output_folder )
 
-        posts.sort! { |a, b|  b.created <=> a.created }
+        posts = []
+        for post in all_posts:
+            posts.push( post ) if post.visible?
+        end
+
+        posts.sort! { |a, b|  b.created <=> a.created }        
 
         categories = extract_categories( posts )
 
