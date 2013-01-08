@@ -5,11 +5,23 @@ require 'maruku'
 class RendererFactory
     def create( content_type )
         case content_type
+        when "irc"
+            return IRCRenderer.new()
         when "html"
             return HtmlRenderer.new()
         when "markdown" 
             return MarkdownRenderer.new()
         end
+    end
+end
+
+class IRCRenderer
+    def to_html( content, yaml_object )
+        constructed_content = "<p class='irc'>"
+        escaped = content.gsub("<", "&lt;").gsub(">", "&gt;").gsub("&","&amp;")
+        constructed_content << escaped.gsub(/&lt;([\S])&gt;/, "<strong>\1</strong>")
+        constructed_content << "</p>"
+        return constructed_content
     end
 end
 
