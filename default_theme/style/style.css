@@ -66,3 +66,7 @@ article{
 article img{
     padding: 5px;
 }
+
+#irc{
+    font-family: monospace;
+}

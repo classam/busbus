@@ -1,6 +1,7 @@
 
 require 'rubygems'
 require 'maruku'
+require 'cgi'
 
 class RendererFactory
     def create( content_type )
@@ -17,10 +18,19 @@ end
 
 class IRCRenderer
     def to_html( content, yaml_object )
-        constructed_content = "<p class='irc'>"
-        escaped = content.gsub("<", "&lt;").gsub(">", "&gt;").gsub("&","&amp;")
-        constructed_content << escaped.gsub(/&lt;([\S])&gt;/, "<strong>\1</strong>")
-        constructed_content << "</p>"
+        constructed_content = "<ul id='irc'>"
+        
+        lines = content.split(/\n/) 
+        for line in lines:
+            escaped_line = CGI.escapeHTML( line )
+            if line.match(/<([\S]*)>/)
+                constructed_content << escaped_line.gsub(/&lt;([\S]*)&gt;/, '<li><strong class="name">\1</strong>') << "</li>\n"
+            else
+                constructed_content << "<li class='other'>" << escaped_line << "</li>"
+            end
+        end
+
+        constructed_content << "</ul>"
         return constructed_content
     end
 end
