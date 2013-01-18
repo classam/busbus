@@ -15,8 +15,17 @@ class InputYaml
         @post.title = object['title']
         @post.created = DateTime.parse(object['created'])
 
-        content = object['content']
-        content_type = object['content_type']
+        if object['content'] then
+            content = object['content']
+        else
+            content = ""
+        end
+        
+        if object['content_type'] then
+            content_type = object['content_type']
+        else
+            content_type = "html"
+        end
         renderer = rendererFactory.create( content_type )
 
         @post.html_content = renderer.to_html( content, object )  
