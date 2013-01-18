@@ -8,6 +8,8 @@ class RendererFactory
         case content_type
         when "irc"
             return IRCRenderer.new()
+        when "comic"
+            return ComicRenderer.new()
         when "html"
             return HtmlRenderer.new()
         when "markdown" 
@@ -24,13 +26,42 @@ class IRCRenderer
         for line in lines:
             escaped_line = CGI.escapeHTML( line )
             if line.match(/<([\S]*)>/)
-                constructed_content << escaped_line.gsub(/&lt;([\S]*)&gt;/, '<li><strong class="name">\1</strong>') << "</li>\n"
+                constructed_content << escaped_line.gsub(/&lt;([\S]*)&gt;/, '\t<li><strong class="name">\1</strong>') << "</li>\n"
             else
-                constructed_content << "<li class='other'>" << escaped_line << "</li>"
+                constructed_content << "\t<li class='other'>" << escaped_line << "</li>"
             end
         end
 
         constructed_content << "</ul>"
+        return constructed_content
+    end
+end
+
+class ComicRenderer
+    def to_html( content, yaml_object )
+
+        if yaml_object['comic'] then 
+            unless yaml_object['alt-text']
+                yaml_object['alt-text'] = ""
+            end
+
+            constructed_content = "<div class='comic'>"
+            if yaml_object['comic'].kind_of?(Array) then
+                constructed_content << "\t<ul class='comics'>"
+                yaml_object['comic'].each do |comic|
+                    constructed_content << "\t\t<li><img src='"+comic+"' title='"+yaml_object['alt-text']+"' alt='Comic' /></li>"
+                end
+                constructed_content << "\t</ul>"
+            else
+                constructed_content << "\t<img src='"+yaml_object['comic']+"' title='"+yaml_object['alt-text']+"' alt='Comic' />"
+            end
+            constructed_content << "</div>"
+        end
+
+        constructed_content << "<div class='blog_post'>"
+        constructed_content << "\t" + Maruku.new(content).to_html()
+        constructed_content << "</div>"
+
         return constructed_content
     end
 end
@@ -46,6 +77,9 @@ end
 
 class MarkdownRenderer
     def to_html( content, yaml_object )
-        return Maruku.new(content).to_html()
+        constructed_content = "<div class='blog_post'>"
+        constructed_content << "\t" + Maruku.new(content).to_html()
+        constructed_content << "</div>"
+        return constructed_content
     end
 end
