@@ -5,12 +5,12 @@ require './theme'
 
 require 'optparse' 
 
-def compile( input_folder, output_folder, theme_folder, root )
+def compile( input_folder, output_folder, theme_folder, root, single_category = nil )
 
     posts = yaml_directory_to_list_of_posts( input_folder )
     theme = Theme.new( theme_folder, root ) 
 
-    theme.render( posts, output_folder ) 
+    theme.render( posts, output_folder, single_category ) 
 
 end
 
@@ -32,6 +32,9 @@ optparse = OptionParser.new {|opts|
     options[:output_folder] = nil
     opts.on( '-o', '--output_folder OUTPUT', 'Path to the target folder.') { |output| options[:output_folder] = output } 
 
+    options[:single_category] = nil
+    opts.on( '-s', '--single_category CATEGORY', 'Only render posts that contain this category.') { |category| options[:single_category] = category } 
+
     opts.on("-h", "--help", "Show this message"){
         puts opts
         exit
@@ -45,4 +48,4 @@ if options[:input_folder] == nil or options[:theme_folder] == nil or options[:ou
     exit
 end
 
-compile( options[:input_folder], options[:output_folder], options[:theme_folder], options[:root]) 
+compile( options[:input_folder], options[:output_folder], options[:theme_folder], options[:root], options[:single_category]) 

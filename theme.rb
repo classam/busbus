@@ -57,11 +57,18 @@ class Theme
         FileUtils.cp_r( theme_style_folder_path, output_style_folder_path )
     end
 
-    def render( all_posts, output_folder )
+    def render( all_posts, output_folder, single_category=nil )
+    # all_posts - the list of posts to render
+    # output_folder - a path to a place to render the files _to_
+    # single_category - if this is set, only render posts that contain this category
 
         posts = []
         for post in all_posts:
-            posts.push( post ) if post.visible?
+            unless single_category
+                posts.push( post ) if post.visible?
+            else
+                posts.push( post ) if post.visible? and post.categories.include? single_category
+            end
         end
 
         posts.sort! { |a, b|  b.created <=> a.created }        
@@ -150,11 +157,11 @@ class Theme
     
             end
             
-            generate_post( previous_post, post, next_post, category_object, output_folder )
+            generate_post( posts, previous_post, post, next_post, category_object, output_folder )
         end
     end
 
-    def generate_post( previous_post, current_post, next_post, category_object, output_folder ) 
+    def generate_post( posts, previous_post, current_post, next_post, category_object, output_folder ) 
         quickwrite( @single_theme_erb.result( binding ), File.join( output_folder, 'post', current_post.id + ".html") ) 
     end
 
