@@ -63,7 +63,7 @@ class Theme
     # single_category - if this is set, only render posts that contain this category
 
         posts = []
-        for post in all_posts:
+        for post in all_posts
             unless single_category
                 posts.push( post ) if post.visible?
             else

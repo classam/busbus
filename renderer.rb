@@ -23,7 +23,7 @@ class IRCRenderer
         constructed_content = "<ul id='irc'>"
         
         lines = content.split(/\n/) 
-        for line in lines:
+        for line in lines
             escaped_line = CGI.escapeHTML( line )
             if line.match(/<([\S]*)>/)
                 constructed_content << escaped_line.gsub(/&lt;([\S]*)&gt;/, '<li><strong class="name">\1</strong>') << "</li>\n"
