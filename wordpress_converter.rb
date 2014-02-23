@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 
 require './input_xml'
 require "./output_yaml"
