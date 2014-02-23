@@ -12,6 +12,7 @@ def softmkdir( output_folder )
 end
 
 def quickwrite( string, path ) 
+    print("writing to " + path + "\n")
     File.open( path, 'w' ) do |f|
         f.puts string
     end
