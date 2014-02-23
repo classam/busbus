@@ -1,4 +1,3 @@
-# -*- encoding : utf-8 -*-
 
 require "./post" 
 require "./output_yaml"

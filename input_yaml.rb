@@ -1,10 +1,8 @@
-# -*- encoding : utf-8 -*-
 
 require "./post"
 require 'yaml'
 require './renderer'
 require 'date'
-print( "Using YAML engine: " + YAML::ENGINE.yamler )
 
 class InputYaml
 

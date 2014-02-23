@@ -1,4 +1,3 @@
-# -*- encoding : utf-8 -*-
 
 require './input_xml_test.rb'
 require './input_yaml_test.rb'
