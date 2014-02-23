@@ -32,6 +32,12 @@ class InputYaml
 
         @post.html_content = renderer.to_html( content, object )  
         @post.categories = object['categories']
+        
+        if @post.categories.include?("Needlessly Technical") then
+            @post.categories.delete("Needlessly Technical")
+            @post.categories = @post.categories << "Tech"
+        end
+
         @post.visible = object['visible']
     end
     
